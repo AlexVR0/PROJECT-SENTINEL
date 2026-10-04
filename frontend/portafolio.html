@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SENTINEL // Portafolio & Asignación de Activos</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 min-h-screen flex flex-col justify-between p-4 sm:p-8">
+    <div class="max-w-4xl w-full mx-auto space-y-8">
+      
+      <!-- Encabezado con Navbar -->
+      <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-6">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <a href="/index.html">
+              <h1 class="text-2xl font-black tracking-wider text-slate-100">S.E.N.T.I.N.E.L</h1>
+            </a>
+          </div>
+          <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest">Motor de Análisis Fundamental & Riesgo</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Barra de Navegación entre Páginas -->
+          <nav class="flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold">
+            <a href="/index.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors">
+              Terminal
+            </a>
+            <a href="/portafolio.html" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold transition-all shadow-sm">
+              Portafolio
+            </a>
+          </nav>
+
+          <span class="text-xs px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hidden sm:inline-block">
+            Engine: <span class="text-emerald-400">Gemini Flash</span>
+          </span>
+        </div>
+      </header>
+
+      <!-- Tarjeta Superior: Métricas Generales del Portafolio -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-7 shadow-xl backdrop-blur-sm">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-5">
+          <div>
+            <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Valor Total del Portafolio</span>
+            <h2 id="portfolio-total" class="text-4xl sm:text-5xl font-black tracking-tight text-white mt-1">$0.00</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Total Activos</span>
+              <span id="portfolio-count" class="inline-block text-xs font-bold px-3 py-1 rounded-md border border-slate-700 bg-slate-800 text-emerald-400 mt-0.5">0 activos</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Estado</span>
+              <span id="portfolio-status" class="inline-block text-xs font-bold px-3 py-1 rounded-md border border-slate-800 bg-slate-950 text-slate-400 mt-0.5">Listo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario para Agregar Activo -->
+        <form id="add-asset-form" class="mt-5 grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <div class="sm:col-span-5">
+            <label class="block text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1.5">Símbolo / Ticker</label>
+            <input
+              id="asset-ticker"
+              type="text"
+              placeholder="Ej. NVDA, VOO, AAPL..."
+              required
+              autocomplete="off"
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 uppercase  font-bold transition-all"
+            />
+          </div>
+          <div class="sm:col-span-4">
+            <label class="block text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-1.5">Monto Invertido ($)</label>
+            <input
+              id="asset-amount"
+              type="number"
+              step="any"
+              min="0.01"
+              placeholder="Ej. 1500"
+              required
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50  transition-all"
+            />
+          </div>
+          <div class="sm:col-span-3 flex items-end">
+            <button
+              type="submit"
+              class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/40 text-sm"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Agregar</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Panel Central: Gráfica de Distribución y Lista de Activos -->
+      <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Columna Izquierda: Gráfica Doughnut / Pastel (7 cols en desktop) -->
+        <div class="md:col-span-7 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2 text-emerald-400">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <h3 class="text-xs uppercase tracking-widest font-bold">Distribución de Cartera</h3>
+            </div>
+            <span class="text-[10px] uppercase  px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">
+              Ponderación %
+            </span>
+          </div>
+
+          <!-- Contenedor del Canvas -->
+          <div class="relative w-full aspect-square max-w-75 mx-auto flex items-center justify-center my-auto">
+            <canvas id="portfolio-chart"></canvas>
+            <!-- Estado vacío si aún no hay activos -->
+            <div id="chart-empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-4 text-slate-500">
+              <svg class="w-12 h-12 mb-2 text-slate-700 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+              </svg>
+              <p class="text-xs">Agrega activos arriba para visualizar la distribución.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Lista de Activos (5 cols en desktop) -->
+        <div class="md:col-span-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 flex flex-col backdrop-blur-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xs uppercase tracking-widest font-bold text-slate-300">Activos en Cartera</h3>
+            <button id="clear-portfolio-btn" type="button" class="text-[11px] text-slate-500 hover:text-rose-400 transition-colors cursor-pointer">
+              Vaciar Todo
+            </button>
+          </div>
+
+          <!-- Contenedor con scroll de activos -->
+          <div id="assets-list" class="space-y-2 max-h-80 overflow-y-auto pr-1 flex-1">
+            <!-- Estado vacío -->
+            <div id="assets-empty-state" class="text-center py-12 text-slate-600 text-xs">
+              Sin activos registrados aún.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Auditoría con Inteligencia Artificial (Gemini) -->
+      <section class="space-y-4">
+        <!-- Barra de Acción -->
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+              <span>Auditoría de Portafolio con Gemini</span>
+              <span class="text-[10px] uppercase  px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/40">AI Engine</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Diagnóstico de nivel de riesgo, diversificación, concentración de activos y sugerencias de balanceo.</p>
+          </div>
+          <button
+            id="btn-analyze-portfolio"
+            type="button"
+            class="w-full sm:w-auto bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-slate-950 font-bold px-6 py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 cursor-pointer whitespace-nowrap"
+          >
+            <span id="btn-analyze-text">Analizar Portafolio</span>
+            <div id="portfolio-spinner" class="hidden w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+          </button>
+        </div>
+
+        <!-- Resultados de la Auditoría (Oculto inicialmente) -->
+        <div id="portfolio-analysis-container" class="hidden space-y-4">
+          
+          <!-- Veredicto de Riesgo General -->
+          <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div>
+              <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Perfil de Riesgo Detectado</span>
+              <h4 id="analysis-risk-level" class="text-xl font-bold text-white mt-0.5">---</h4>
+            </div>
+            <p id="analysis-summary" class="text-sm text-slate-400 sm:max-w-md sm:text-right leading-relaxed">
+              ---
+            </p>
+          </div>
+
+          <!-- Cuadrícula: Lo Bueno vs Lo Malo / Riesgos -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Tarjeta: Puntos Fuertes (Lo Bueno) -->
+            <div class="bg-emerald-950/20 border border-emerald-900/40 rounded-2xl p-5 space-y-3">
+              <div class="flex items-center gap-2 text-emerald-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <h4 class="text-sm uppercase tracking-wider font-bold">Fortalezas del Portafolio</h4>
+              </div>
+              <ul id="analysis-strengths" class="space-y-2 text-sm text-slate-300 leading-relaxed list-disc list-inside">
+                <!-- Generado dinámicamente -->
+              </ul>
+            </div>
+
+            <!-- Tarjeta: Riesgos y Concentración (Lo Malo) -->
+            <div class="bg-rose-950/20 border border-rose-900/40 rounded-2xl p-5 space-y-3">
+              <div class="flex items-center gap-2 text-rose-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h4 class="text-sm uppercase tracking-wider font-bold">Riesgos & Concentración</h4>
+              </div>
+              <ul id="analysis-weaknesses" class="space-y-2 text-sm text-slate-300 leading-relaxed list-disc list-inside">
+                <!-- Generado dinámicamente -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tarjeta: Sugerencias de Rebalanceo -->
+          <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 space-y-2">
+            <h4 class="text-sm uppercase tracking-wider font-bold text-amber-400 flex items-center gap-1.5">
+              <span>💡</span> Recomendación de Rebalanceo
+            </h4>
+            <p id="analysis-rebalance" class="text-sm text-slate-300 leading-relaxed">
+              ---
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pie de página legal -->
+      <footer class="max-w-4xl w-full mx-auto mt-12 pt-6 border-t border-slate-900 text-center text-xs text-slate-600">
+        SENTINEL es una herramienta de asistencia analítica y experimentación técnica. No constituye asesoría financiera legal ni recomendación formal de corretaje.
+      </footer>
+    </div>
+
+    <script type="module" src="/src/portafolio.js"></script>
+  </body>
+</html>

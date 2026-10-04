@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SENTINEL // Terminal de Análisis Bursátil</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 min-h-screen flex flex-col justify-between p-4 sm:p-8">
+    <div class="max-w-4xl w-full mx-auto space-y-8">
+      
+      <!-- Encabezado -->
+      <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-6">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <a href="index.html">
+              <h1 class="text-2xl font-black tracking-wider text-slate-100">S.E.N.T.I.N.E.L</h1>
+            </a>
+          </div>
+          <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest">Motor de Análisis Fundamental & Riesgo</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <!-- Barra de Navegación entre Páginas -->
+          <nav class="flex items-center gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl text-xs font-semibold">
+            <a href="/index.html" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold transition-all shadow-sm">
+              Terminal
+            </a>
+            <a href="/portafolio.html" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 transition-colors">
+              Portafolio
+            </a>
+          </nav>
+
+          <span class="text-xs px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hidden sm:inline-block">
+            Engine: <span class="text-emerald-400">Gemini Flash</span>
+          </span>
+        </div>
+      </header>
+
+      <!-- Buscador y Chips rápidos -->
+      <section class="space-y-3">
+        <form id="search-form" class="flex flex-col sm:flex-row gap-2">
+          <div class="relative flex-1">
+            <input
+              id="query-input"
+              type="text"
+              autocomplete="off"
+              placeholder="Escribe el nombre de una empresa o ticker (ej. Nvidia, Apple, TSLA, Mercado Libre)..."
+              class="w-full bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3.5 pl-11 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500/50 transition-all shadow-inner"
+            />
+            <svg class="w-4 h-4 text-slate-500 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <button
+            id="submit-btn"
+            type="submit"
+            class="bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-slate-950 font-bold px-7 py-3.5 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950/40"
+          >
+            <span id="btn-text">Analizar</span>
+            <div id="btn-spinner" class="hidden w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+          </button>
+        </form>
+
+        <!--Contenedor para la lista de opciones-->
+        <div id="options-container" class="hidden space-y-2">
+          <p class="text-xs uppercase tracking-wider text-slate-400"> Selecciona el activo a analizar</p>
+          <div id="options-list" class="grid grid-cols-1 gap-2">
+            <!--Botones insertados dinamicamente con JS-->
+          </div>
+        </div>
+
+        <!-- Píldoras de sugerencias rápidas -->
+        <div class="flex items-center gap-2 flex-wrap text-xs text-slate-500">
+          <span>Pruebas rápidas:</span>
+          <button type="button" class="quick-chip hover:text-emerald-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-md transition-colors cursor-pointer">NVDA</button>
+          <button type="button" class="quick-chip hover:text-emerald-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-md transition-colors cursor-pointer">AAPL</button>
+          <button type="button" class="quick-chip hover:text-emerald-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-md transition-colors cursor-pointer">MSFT</button>
+          <button type="button" class="quick-chip hover:text-emerald-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-md transition-colors cursor-pointer">TSLA</button>
+          <button type="button" class="quick-chip hover:text-emerald-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-md transition-colors cursor-pointer">AMZN</button>
+        </div>
+      </section>
+
+      <!-- Mensaje de Error -->
+      <div id="error-card" class="hidden bg-rose-950/30 border border-rose-800/50 rounded-xl p-4 text-rose-300 text-sm items-center gap-3">
+        <svg class="w-5 h-5 flex-shrink: 0 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span id="error-text">No fue posible obtener el análisis. Revisa la consola o tu servidor API.</span>
+      </div>
+
+      <!-- Estado de Carga (Skeleton Loader) -->
+      <div id="loading-state" class="hidden space-y-4 animate-pulse">
+        <div class="h-28 bg-slate-900/60 border border-slate-800/60 rounded-2xl"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="h-44 bg-slate-900/60 border border-slate-800/60 rounded-2xl"></div>
+          <div class="h-44 bg-slate-900/60 border border-slate-800/60 rounded-2xl"></div>
+        </div>
+      </div>
+
+      <!-- Contenedor de Noticias del Mercado -->
+      <div id="res-noticias" class="hidden space-y-3">
+        <div class="flex items-center gap-2 text-cyan-400">
+          <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <h3 class="text-xs uppercase tracking-widest font-bold">Últimas Noticias del Mercado</h3>
+        </div>
+        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Tarjetas generadas dinámicamente con JS -->
+        </div>
+      </div>
+
+      <!-- Contenedor de Sentimiento de Mercado (Trending Stocks ApeWisdom) -->
+      <div id="res-sentiment" class="hidden space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-amber-400">
+            <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <h3 class="text-xs uppercase tracking-widest font-bold">Trending Stocks en Reddit & WSB</h3>
+          </div>
+          <span class="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-amber-950/40 text-amber-400 border border-amber-800/40">
+            ApeWisdom Live Feed
+          </span>
+        </div>
+
+        <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden backdrop-blur-sm shadow-xl">
+          <!-- Encabezado de la barra horizontal -->
+          <div class="grid grid-cols-12 gap-3 px-5 py-3 bg-slate-950/60 border-b border-slate-800 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            <div class="col-span-2 sm:col-span-1 text-center">Rank</div>
+            <div class="col-span-3 sm:col-span-2">Ticker</div>
+            <div class="col-span-4 sm:col-span-6">Empresa</div>
+            <div class="col-span-3 text-right">Menciones</div>
+          </div>
+
+          <!-- Filas horizontales generadas dinámicamente con JS -->
+          <div id="sentiment-list" class="divide-y divide-slate-800/60 max-h-96 overflow-y-auto">
+            <!-- Filas generadas dinámicamente con JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenedor de Resultados -->
+      <main id="result-container" class="hidden space-y-6">
+        
+        <!-- Tarjeta Principal: Ticker y Veredicto -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-7 shadow-xl backdrop-blur-sm">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-5">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-slate-500">Activo Analizado</span>
+              <h2 id="res-ticker" class="text-3xl sm:text-4xl font-black tracking-tight text-white">---</h2>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Precio Actual</span>
+                <span id="res-price" class="inline-block text-xs font-bold px-3 py-1 rounded-md border mt-0.5">---</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Riesgo</span>
+                <span id="res-risk" class="inline-block text-xs font-bold px-3 py-1 rounded-md border mt-0.5">---</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] uppercase tracking-wider text-slate-500 block">Postura</span>
+                <span id="res-recommendation" class="inline-block text-xs font-black px-4 py-1.5 rounded-lg border tracking-wider shadow-sm mt-0.5">---</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio Razonable Estimado (si viene en el payload) -->
+          <div id="res-fairvalue-box" class="mt-4 pt-1 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Rango / Precio razonable estimado:</span>
+            <span id="res-fairvalue" class="text-emerald-400 font-bold">---</span>
+          </div>
+        </div>
+
+        <!-- Grid: Tesis vs Riesgos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Tesis -->
+          <div class="bg-slate-900/50 border border-slate-800/90 rounded-2xl p-6 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 text-emerald-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <h3 class="text-xs uppercase tracking-widest font-bold">Tesis de Inversión</h3>
+              </div>
+              <p id="res-thesis" class="text-sm text-slate-300 leading-relaxed">---</p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/60 text-[11px] text-slate-500">
+              Evaluación fundamentada en márgenes y ratios contables.
+            </div>
+          </div>
+
+          <!-- Riesgos Clave -->
+          <div class="bg-slate-900/50 border border-slate-800/90 rounded-2xl p-6 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2 text-rose-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h3 class="text-xs uppercase tracking-widest font-bold">Factores de Riesgo</h3>
+              </div>
+              <ul id="res-risks-list" class="space-y-2 text-sm text-slate-300">
+                <!-- Se llena con JS -->
+              </ul>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/60 text-[11px] text-slate-500">
+              Considerar volatilidad sectorial y apalancamiento.
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Pie de página legal obligatorio para apps financieras -->
+    <footer class="max-w-4xl w-full mx-auto mt-12 pt-6 border-t border-slate-900 text-center text-xs text-slate-600">
+      SENTINEL es una herramienta de asistencia analítica y experimentación técnica. No constituye asesoría financiera legal ni recomendación formal de corretaje.
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
